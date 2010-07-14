@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>onebusaway-wiki-integration</artifactId>
+        <groupId>org.onebusaway</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <groupId>org.onebusaway</groupId>
+    <artifactId>onebusaway-wiki-integration-xwiki</artifactId>
+    <packaging>pom</packaging>
+
+    <name>onebusaway-wiki-integration-xwiki</name>
+
+    <properties>
+        <xwiki.version>2.3.1</xwiki.version>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>xwiki</id>
+            <url>http://maven.xwiki.org/releases</url>
+        </repository>
+    </repositories>
+
+    <modules>
+        <module>onebusaway-wiki-integration-xwiki-impl</module>
+        <module>onebusaway-wiki-integration-xwiki-struts-macros</module>
+        <module>onebusaway-wiki-integration-xwiki-urlnotification-plugin</module>
+    </modules>
+
+</project>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>onebusaway-wiki-integration-xwiki</artifactId>
+        <groupId>org.onebusaway</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <groupId>org.onebusaway</groupId>
+    <artifactId>onebusaway-wiki-integration-xwiki-impl</artifactId>
+    <packaging>jar</packaging>
+
+    <name>onebusaway-wiki-integration-xwiki-impl</name>
+
+    <dependencies>
+        <!-- Wiki API Dependency -->
+        <dependency>
+            <groupId>org.onebusaway</groupId>
+            <artifactId>onebusaway-wiki-integration-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- XWiki Dependencies -->
+        <dependency>
+            <groupId>org.xwiki.platform</groupId>
+            <artifactId>xwiki-core-component-default</artifactId>
+            <version>${xwiki.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.xwiki.platform</groupId>
+            <artifactId>xwiki-core-query-manager</artifactId>
+            <version>${xwiki.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.xwiki.platform</groupId>
+            <artifactId>xwiki-core-rendering-syntax-wikimodel</artifactId>
+            <version>${xwiki.version}</version>
+        </dependency>
+
+        <dependency>
+        	<groupId>commons-httpclient</groupId>
+        	<artifactId>commons-httpclient</artifactId>
+        	<version>3.0.1</version>
+        </dependency>
+        <dependency>
+        	<groupId>commons-digester</groupId>
+        	<artifactId>commons-digester</artifactId>
+        	<version>1.8</version>
+        </dependency>
+    </dependencies>
+
+</project>

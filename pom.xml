@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>onebusaway</artifactId>
+        <groupId>org.onebusaway</groupId>
+        <version>1.0.6</version>
+    </parent>
+
+    <groupId>org.onebusaway</groupId>
+    <artifactId>onebusaway-wiki-integration</artifactId>
+    <packaging>pom</packaging>
+    <version>0.0.1-SNAPSHOT</version>
+
+    <name>onebusaway-wiki-integration</name>
+
+    <scm>
+        <connection>scm:svn:http://onebusaway.googlecode.com/svn/onebusaway-wiki-integration/trunk</connection>
+        <developerConnection>scm:svn:https://onebusaway.googlecode.com/svn/onebusaway-wiki-integration/trunk</developerConnection>
+        <url>http://code.google.com/p/onebusaway/source/browse/#svn/onebusaway-wiki-integration/trunk</url>
+    </scm>
+
+    <repositories>
+        <repository>
+            <id>releases.developer.onebusaway.org</id>
+            <url>http://developer.onebusaway.org/maven/repository/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>snapshots.developer.onebusaway.org</id>
+            <url>http://developer.onebusaway.org/maven/snapshot-repository/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <modules>
+        <module>onebusaway-wiki-integration-api</module>
+        <module>onebusaway-wiki-integration-xwiki</module>
+    </modules>
+
+</project>

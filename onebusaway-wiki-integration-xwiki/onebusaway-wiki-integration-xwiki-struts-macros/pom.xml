@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>onebusaway-wiki-integration-xwiki</artifactId>
+        <groupId>org.onebusaway</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <groupId>org.onebusaway</groupId>
+    <artifactId>onebusaway-wiki-integration-xwiki-struts-macros</artifactId>
+    <packaging>jar</packaging>
+
+    <name>onebusaway-wiki-integration-xwiki-struts-macros</name>
+    
+    <properties>
+        <struts.version>2.1.8.1</struts.version>
+    </properties>
+
+    <dependencies>
+
+        <!-- XWiki Dependencies -->
+        <dependency>
+            <groupId>org.xwiki.platform</groupId>
+            <artifactId>xwiki-core-component-api</artifactId>
+            <version>${xwiki.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.xwiki.platform</groupId>
+            <artifactId>xwiki-core-rendering-api</artifactId>
+            <version>${xwiki.version}</version>
+        </dependency>
+
+        <dependency>
+        	<groupId>org.apache.struts</groupId>
+        	<artifactId>struts2-core</artifactId>
+        	<version>${struts.version}</version>
+        </dependency>
+    </dependencies>
+
+</project>
