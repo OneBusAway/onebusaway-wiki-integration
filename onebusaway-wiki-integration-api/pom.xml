@@ -14,5 +14,9 @@
     <packaging>jar</packaging>
 
     <name>onebusaway-wiki-integration-api</name>
+    <description>
+      Defines a generic interface for retrieving and rendering content from a back-end wiki or
+      content managment system
+    </description>
 
 </project>

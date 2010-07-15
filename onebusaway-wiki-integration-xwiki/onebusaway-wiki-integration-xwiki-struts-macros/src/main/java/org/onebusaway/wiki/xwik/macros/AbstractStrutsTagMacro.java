@@ -29,14 +29,22 @@ import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.inject.Container;
 import com.opensymphony.xwork2.util.ValueStack;
 
+/**
+ * Abstrat support class that makes it easy to wrap an Apache Struts 2
+ * {@link Component} content rendering tag with an XWiki macro.
+ * 
+ * @author bdferris
+ * 
+ * @param <T>
+ * @param <V>
+ */
 public abstract class AbstractStrutsTagMacro<T extends CommonMacroParameters, V extends Component>
     extends AbstractMacro<T> {
-  
-  /**                                                                                                                                                               
-   * The syntax representing the output of this macro (used for the RawBlock).                                                                                      
+
+  /**
+   * The syntax representing the output of this macro (used for the RawBlock).
    */
   private static final Syntax XHTML_SYNTAX = new Syntax(SyntaxType.XHTML, "1.0");
-
 
   /**
    * Used to find the parser from syntax identifier.
@@ -46,8 +54,6 @@ public abstract class AbstractStrutsTagMacro<T extends CommonMacroParameters, V 
 
   @Requirement("xhtml/1.0")
   private PrintRendererFactory xhtmlRendererFactory;
-  
-
 
   public AbstractStrutsTagMacro(String name, String description,
       Class<T> parametersBeanClass) {
@@ -74,12 +80,12 @@ public abstract class AbstractStrutsTagMacro<T extends CommonMacroParameters, V 
 
     StringWriter writer = new StringWriter();
     boolean evaluateBody = component.start(writer);
-    if( ! evaluateBody )
+    if (!evaluateBody)
       content = "";
     component.end(writer, content);
 
     List<Block> wordBlockAsList = Arrays.<Block> asList(new RawBlock(
-        writer.toString(),XHTML_SYNTAX));
+        writer.toString(), XHTML_SYNTAX));
 
     // Handle both inline mode and standalone mode.
     if (context.isInline()) {

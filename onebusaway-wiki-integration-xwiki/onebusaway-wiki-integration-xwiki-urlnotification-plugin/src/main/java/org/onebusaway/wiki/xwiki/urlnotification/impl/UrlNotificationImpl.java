@@ -14,6 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.onebusaway.wiki.xwiki.urlnotification.api.UrlNotification;
+import org.onebusaway.wiki.xwiki.urlnotification.plugin.UrlNotificationPlugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xwiki.model.reference.DocumentReference;
@@ -30,6 +31,14 @@ import com.xpn.xwiki.XWikiException;
 import com.xpn.xwiki.doc.XWikiDocument;
 import com.xpn.xwiki.web.Utils;
 
+/**
+ * Provides the bulk of the implementation for the url notification plugin. Is
+ * in charge of receiving a list of urls, listening for document updates, and
+ * firing of url requests in response to those updates.
+ * 
+ * @author bdferris
+ * @see UrlNotificationPlugin
+ */
 public class UrlNotificationImpl implements UrlNotification, EventListener {
 
   private static final Logger _log = LoggerFactory.getLogger(UrlNotificationImpl.class);
@@ -97,7 +106,7 @@ public class UrlNotificationImpl implements UrlNotification, EventListener {
     for (String url : _urls) {
       try {
         url = updateUrl(url, document);
-        _log.debug("sending notification url: {}",url);
+        _log.debug("sending notification url: {}", url);
         URL parsedUrl = new URL(url);
         _executor.execute(new UrlFetcher(parsedUrl));
       } catch (Exception ex) {

@@ -4,6 +4,24 @@ import org.onebusaway.wiki.api.WikiPage;
 import org.xwiki.component.annotation.Component;
 import org.xwiki.rendering.wiki.WikiModel;
 
+/**
+ * A custom implementation of the XWiki {@link WikiModel} class that generates
+ * URLs to an external resource as opposed to the underlying wiki directly. See
+ * the entries in META-INF/components.txt and META-INF/components-overrides.txt
+ * for details about how this class is injected into the XWiki container.
+ * 
+ * A note on url expansion:
+ * 
+ * When you specify any of your external URLs:
+ * {@link #setDocumentViewUrl(String)}, {@link #setDocumentEditUrl(String)}, or
+ * {@link #setAttachmentUrl(String)}, the urls support a limited form of
+ * variable replacement and expansion. If you url contains the sequence
+ * "%{documentName}", it will automatically be replaced with the document name
+ * for the target wiki document.
+ * 
+ * @author bdferris
+ * @see WikiModel
+ */
 @Component
 public class XWikiModelImpl implements WikiModel {
 

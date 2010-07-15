@@ -16,6 +16,19 @@ import org.xwiki.rendering.renderer.printer.WikiPrinter;
 import org.xwiki.rendering.syntax.Syntax;
 import org.xwiki.rendering.wiki.WikiModel;
 
+/**
+ * Implementation of {@link WikiRenderingService} that uses XWiki rendering
+ * components to render XWiki 2.0 syntax into HTML. We provide flexibilty in how
+ * internal links (for other wiki pages, edit links, and attachment links) are
+ * rendered into urls. Use {@link #setWikiDocumentViewUrl(String)},
+ * {@link #setWikiDocumentEditUrl(String)}, and
+ * {@link #setWikiAttachmentUrl(String)} to control that urls that will be used,
+ * taking note of url variable substitution that will take place, as defined in
+ * {@link XWikiModelImpl}.
+ * 
+ * @author bdferris
+ * @see WikiRenderingService
+ */
 public class XWikiRenderingServiceImpl implements WikiRenderingService {
 
   private Converter _converter;

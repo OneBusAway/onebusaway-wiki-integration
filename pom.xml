@@ -16,6 +16,10 @@
     <version>0.0.1-SNAPSHOT</version>
 
     <name>onebusaway-wiki-integration</name>
+    <description>
+      A flexible set of modules that allow OneBusAway to use a wiki or any other back-end content
+      management systems as the source for front end content such as webpage content.
+    </description>
 
     <scm>
         <connection>scm:svn:http://onebusaway.googlecode.com/svn/onebusaway-wiki-integration/trunk</connection>

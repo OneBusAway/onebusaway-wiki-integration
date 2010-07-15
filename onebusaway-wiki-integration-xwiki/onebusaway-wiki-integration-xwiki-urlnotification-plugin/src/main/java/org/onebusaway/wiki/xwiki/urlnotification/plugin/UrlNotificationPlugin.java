@@ -8,6 +8,20 @@ import com.xpn.xwiki.api.Api;
 import com.xpn.xwiki.plugin.XWikiDefaultPlugin;
 import com.xpn.xwiki.plugin.XWikiPluginInterface;
 
+/**
+ * The main url notification plugin entry point. Parses a comma-separated list
+ * of urls from the xwiki.cfg file by looking for
+ * <code>xwiki.plugin.urlnotification.urls</code>. Passes of control to the
+ * {@link UrlNotification} implementation: {@link UrlNotificationImpl}, which
+ * listens for document update events and fires of url requests as appropriate.
+ * The urls can included variables that will be expanded before requets,
+ * including <code>${space}</code> and <code>${name}</code>, which will be
+ * replaced with the space and name of the updated page.
+ * 
+ * @author bdferris
+ * @see UrlNotification
+ * @see UrlNotificationImpl
+ */
 public class UrlNotificationPlugin extends XWikiDefaultPlugin {
 
   /**

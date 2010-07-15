@@ -15,6 +15,10 @@
     <packaging>jar</packaging>
 
     <name>onebusaway-wiki-integration-xwiki-impl</name>
+    <description>
+      Basic XWiki (http://xwiki.org) onebusaway-wiki-integration-api support.  Uses the XWiki REST interface
+      and rendering modules to provide an implementation. 
+    </description>
 
     <dependencies>
         <!-- Wiki API Dependency -->
@@ -42,14 +46,14 @@
         </dependency>
 
         <dependency>
-        	<groupId>commons-httpclient</groupId>
-        	<artifactId>commons-httpclient</artifactId>
-        	<version>3.0.1</version>
+            <groupId>commons-httpclient</groupId>
+            <artifactId>commons-httpclient</artifactId>
+            <version>3.0.1</version>
         </dependency>
         <dependency>
-        	<groupId>commons-digester</groupId>
-        	<artifactId>commons-digester</artifactId>
-        	<version>1.8</version>
+            <groupId>commons-digester</groupId>
+            <artifactId>commons-digester</artifactId>
+            <version>1.8</version>
         </dependency>
     </dependencies>
 

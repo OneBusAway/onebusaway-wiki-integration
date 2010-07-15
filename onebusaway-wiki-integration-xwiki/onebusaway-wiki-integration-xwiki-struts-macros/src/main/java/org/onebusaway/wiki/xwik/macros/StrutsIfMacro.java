@@ -6,10 +6,15 @@ import org.xwiki.component.annotation.Component;
 import com.opensymphony.xwork2.util.ValueStack;
 
 /**
- * Example Macro.
+ * XWiki Macro implementation of a Struts &lt;s:if test=""&gt;...&lt;/s:if&gt;
+ * tag.
+ * 
+ * @author bdferris
+ * @see StrutsIfMacroParameters
  */
 @Component("struts_if")
-public class StrutsIfMacro extends AbstractStrutsTagMacro<StrutsIfMacroParameters,If> {
+public class StrutsIfMacro extends
+    AbstractStrutsTagMacro<StrutsIfMacroParameters, If> {
 
   private static final String DESCRIPTION = "Struts If Tag Macro";
 
@@ -27,8 +32,7 @@ public class StrutsIfMacro extends AbstractStrutsTagMacro<StrutsIfMacroParameter
   }
 
   @Override
-  protected void populateParams(If component,
-      StrutsIfMacroParameters params) {
+  protected void populateParams(If component, StrutsIfMacroParameters params) {
     super.populateParams(component, params);
     component.setTest(params.getTest());
   }

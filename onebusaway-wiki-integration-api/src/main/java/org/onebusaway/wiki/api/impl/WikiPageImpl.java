@@ -4,6 +4,12 @@ import java.io.Serializable;
 
 import org.onebusaway.wiki.api.WikiPage;
 
+/**
+ * A basic {@link WikiPage} implementation.
+ * 
+ * @author bdferris
+ * @see WikiPage
+ */
 public class WikiPageImpl implements WikiPage, Serializable {
 
   private static final long serialVersionUID = 1L;

@@ -15,7 +15,10 @@
     <packaging>jar</packaging>
 
     <name>onebusaway-wiki-integration-xwiki-struts-macros</name>
-    
+    <description>
+      Provides the functionality of a number of Apache Struts 2 JSP tags as XWiki Macros. 
+    </description>
+
     <properties>
         <struts.version>2.1.8.1</struts.version>
     </properties>
@@ -35,9 +38,9 @@
         </dependency>
 
         <dependency>
-        	<groupId>org.apache.struts</groupId>
-        	<artifactId>struts2-core</artifactId>
-        	<version>${struts.version}</version>
+            <groupId>org.apache.struts</groupId>
+            <artifactId>struts2-core</artifactId>
+            <version>${struts.version}</version>
         </dependency>
     </dependencies>
 

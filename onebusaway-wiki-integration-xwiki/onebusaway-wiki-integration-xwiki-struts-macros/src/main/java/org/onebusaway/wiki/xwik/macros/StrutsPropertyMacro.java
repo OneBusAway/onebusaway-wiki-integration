@@ -6,7 +6,11 @@ import org.xwiki.component.annotation.Component;
 import com.opensymphony.xwork2.util.ValueStack;
 
 /**
- * Example Macro.
+ * XWiki Macro implementation of a Struts &lt;s:property value="..." /&gt;
+ * tag.
+ * 
+ * @author bdferris
+ * @see StrutsPropertyMacroParameters
  */
 @Component("struts_property")
 public class StrutsPropertyMacro extends AbstractStrutsTagMacro<StrutsPropertyMacroParameters,Property> {

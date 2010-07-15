@@ -12,10 +12,27 @@ import org.onebusaway.wiki.api.WikiException;
 import org.onebusaway.wiki.api.WikiPage;
 import org.onebusaway.wiki.api.impl.WikiPageImpl;
 
+/**
+ * Implementation of {@link WikiDocumentService} that uses the XWiki REST
+ * interface to communicate with an existing XWiki server instance. Configure
+ * the datasource by calling {@link #setXwikiUrl(String)} to set the base xwiki
+ * url for the existing wiki instance.
+ * 
+ * @author bdferris
+ * @see WikiDocumentService
+ */
 public class XWikiDocumentServiceImpl implements WikiDocumentService {
 
   private String _xwikiUrl;
 
+  /**
+   * Set the base XWiki url for the existing XWiki instance that will provide
+   * content. If you XWiki home page url looks something like
+   * http://your-wiki.com/bin/view/Main, then your base url would be
+   * http://your-wiki.com
+   * 
+   * @param xwikiUrl the base XWiki url
+   */
   public void setXwikiUrl(String xwikiUrl) {
     _xwikiUrl = xwikiUrl;
   }
