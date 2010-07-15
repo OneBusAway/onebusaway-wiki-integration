@@ -1,11 +1,16 @@
 package org.onebusaway.wiki.xwiki.impl;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.digester.Digester;
+import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.httpclient.UsernamePasswordCredentials;
+import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.onebusaway.wiki.api.WikiDocumentService;
 import org.onebusaway.wiki.api.WikiException;
@@ -25,6 +30,10 @@ public class XWikiDocumentServiceImpl implements WikiDocumentService {
 
   private String _xwikiUrl;
 
+  private String _xwikiUsername;
+
+  private String _xwikiPassword;
+
   /**
    * Set the base XWiki url for the existing XWiki instance that will provide
    * content. If you XWiki home page url looks something like
@@ -37,6 +46,14 @@ public class XWikiDocumentServiceImpl implements WikiDocumentService {
     _xwikiUrl = xwikiUrl;
   }
 
+  public void setXwikiUsername(String xwikiUsername) {
+    _xwikiUsername = xwikiUsername;
+  }
+
+  public void setXwikiPassword(String xwikiPassword) {
+    _xwikiPassword = xwikiPassword;
+  }
+
   @Override
   public WikiPage getWikiPage(String namespace, String name,
       boolean forceRefresh) throws WikiException {
@@ -45,8 +62,27 @@ public class XWikiDocumentServiceImpl implements WikiDocumentService {
 
     String url = _xwikiUrl + "/rest/wikis/xwiki/spaces/" + namespace
         + "/pages/" + name;
+
+    // Configure basic authentication
+    if (_xwikiUsername != null && _xwikiPassword != null) {
+      httpClient.getParams().setAuthenticationPreemptive(true);
+      Credentials defaultcreds = new UsernamePasswordCredentials(
+          _xwikiUsername, _xwikiPassword);
+
+      try {
+        URL parsedUrl = new URL(url);
+        int port = parsedUrl.getPort() == -1 ? 80 : parsedUrl.getPort();
+        httpClient.getState().setCredentials(
+            new AuthScope(parsedUrl.getHost(), port, AuthScope.ANY_REALM), defaultcreds);
+      } catch (MalformedURLException ex) {
+        throw new WikiException("bad url: " + url, ex);
+      }
+    }
+
     GetMethod getMethod = new GetMethod(url);
+
     getMethod.addRequestHeader("Accept", "application/xml");
+
     int code = evaluateHttpMethod(httpClient, getMethod);
 
     if (code != HttpStatus.SC_OK) {

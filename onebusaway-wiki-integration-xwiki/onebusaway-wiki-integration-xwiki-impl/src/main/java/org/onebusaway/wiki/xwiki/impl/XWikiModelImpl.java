@@ -51,6 +51,9 @@ public class XWikiModelImpl implements WikiModel {
   @Override
   public String getDocumentViewURL(String documentName, String anchor,
       String queryString) {
+    
+    if( documentName.startsWith("../"))
+      return documentName;
 
     String url = _documentViewUrl;
 

@@ -52,6 +52,7 @@
 
     <modules>
         <module>onebusaway-wiki-integration-api</module>
+        <module>onebusaway-wiki-integration-tags</module>
         <module>onebusaway-wiki-integration-xwiki</module>
     </modules>
 
