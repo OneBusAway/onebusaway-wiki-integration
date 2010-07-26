@@ -9,7 +9,7 @@
     </parent>
     <groupId>org.onebusaway</groupId>
     <artifactId>onebusaway-wiki-integration-xwiki-macros</artifactId>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
     <name>onebusaway-wiki-integration-xwiki-macros</name>
     <description>
