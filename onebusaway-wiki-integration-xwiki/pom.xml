@@ -34,6 +34,7 @@
         <module>onebusaway-wiki-integration-xwiki-impl</module>
         <module>onebusaway-wiki-integration-xwiki-struts-macros</module>
         <module>onebusaway-wiki-integration-xwiki-urlnotification-plugin</module>
+        <module>onebusaway-wiki-integration-xwiki-macros</module>
     </modules>
 
 </project>

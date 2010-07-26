@@ -35,6 +35,12 @@
             <groupId>org.xwiki.platform</groupId>
             <artifactId>xwiki-core-rendering-api</artifactId>
             <version>${xwiki.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>xerces</groupId>
+                    <artifactId>xercesImpl</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
