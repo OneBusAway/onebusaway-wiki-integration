@@ -16,8 +16,14 @@ public class FileWikiDocumentServiceImpl implements WikiDocumentService {
 
   private File _documuentDirectory;
 
+  private String _extension = "wiki";
+
   public void setDocumentDirectory(File documentDirectory) {
     _documuentDirectory = documentDirectory;
+  }
+
+  public void setExtension(String extension) {
+    _extension = extension;
   }
 
   @Override
@@ -41,9 +47,14 @@ public class FileWikiDocumentServiceImpl implements WikiDocumentService {
 
   private List<File> getFiles(String namespace, String name) {
     List<File> paths = new ArrayList<File>();
+    String extension = "";
+    if (_extension != null)
+      extension = "." + _extension;
     if (_documuentDirectory != null) {
-      paths.add(new File(_documuentDirectory, namespace + File.separator + name));
-      paths.add(new File(_documuentDirectory, name));
+      if (namespace != null)
+        paths.add(new File(_documuentDirectory, namespace + File.separator
+            + name + extension));
+      paths.add(new File(_documuentDirectory, name + extension));
     }
     return paths;
   }
