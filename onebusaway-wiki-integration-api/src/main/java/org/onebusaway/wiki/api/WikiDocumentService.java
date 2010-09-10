@@ -21,7 +21,7 @@ public interface WikiDocumentService {
    * @param forceRefresh a caching hint that indicates if the page should be
    *          refreshed completely if true, otherwise cached content may be
    *          returned
-   * @return a page for the requested resource
+   * @return a page for the requested resource, or null if not found
    * @throws WikiException on error
    */
   public WikiPage getWikiPage(String namespace, String name,
