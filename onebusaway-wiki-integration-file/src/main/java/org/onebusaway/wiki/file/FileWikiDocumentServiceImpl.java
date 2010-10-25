@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.onebusaway.wiki.api.WikiDocumentService;
@@ -76,6 +77,7 @@ public class FileWikiDocumentServiceImpl implements WikiDocumentService {
     page.setName(name);
     page.setTitle(name);
     page.setContent(b.toString());
+    page.setLastModified(new Date(path.lastModified()));
     return page;
   }
 }

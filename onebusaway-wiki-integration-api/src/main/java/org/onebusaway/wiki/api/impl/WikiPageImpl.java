@@ -1,6 +1,7 @@
 package org.onebusaway.wiki.api.impl;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import org.onebusaway.wiki.api.WikiPage;
 
@@ -12,7 +13,7 @@ import org.onebusaway.wiki.api.WikiPage;
  */
 public class WikiPageImpl implements WikiPage, Serializable {
 
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 2L;
 
   private String namespace;
 
@@ -21,6 +22,8 @@ public class WikiPageImpl implements WikiPage, Serializable {
   private String title;
 
   private String content;
+
+  private Date lastModified;
 
   public String getNamespace() {
     return namespace;
@@ -52,5 +55,13 @@ public class WikiPageImpl implements WikiPage, Serializable {
 
   public void setContent(String content) {
     this.content = content;
+  }
+
+  public Date getLastModified() {
+    return lastModified;
+  }
+
+  public void setLastModified(Date lastModified) {
+    this.lastModified = lastModified;
   }
 }

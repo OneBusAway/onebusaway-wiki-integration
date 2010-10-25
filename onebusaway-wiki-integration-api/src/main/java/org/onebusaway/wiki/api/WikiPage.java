@@ -1,5 +1,7 @@
 package org.onebusaway.wiki.api;
 
+import java.util.Date;
+
 import org.onebusaway.wiki.api.impl.WikiPageImpl;
 
 /**
@@ -34,4 +36,10 @@ public interface WikiPage {
    * @return the content of a page
    */
   public String getContent();
+
+  /**
+   * 
+   * @return the last modified time
+   */
+  public Date getLastModified();
 }

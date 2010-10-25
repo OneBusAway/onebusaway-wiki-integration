@@ -1,5 +1,7 @@
 package org.onebusaway.wiki.simple;
 
+import java.util.Date;
+
 import org.onebusaway.wiki.api.WikiDocumentService;
 import org.onebusaway.wiki.api.WikiException;
 import org.onebusaway.wiki.api.WikiPage;
@@ -15,6 +17,7 @@ public class SimpleWikiDocumentServiceImpl implements WikiDocumentService {
     page.setName(name);
     page.setNamespace(namespace);
     page.setTitle("title:" + namespace + "/" + name);
+    page.setLastModified(new Date());
     return page;
   }
 }

@@ -3,9 +3,14 @@ package org.onebusaway.wiki.xwiki.impl;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
+import javax.xml.bind.DatatypeConverter;
+
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.digester.Digester;
+import org.apache.commons.digester.Rule;
 import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
@@ -73,7 +78,8 @@ public class XWikiDocumentServiceImpl implements WikiDocumentService {
         URL parsedUrl = new URL(url);
         int port = parsedUrl.getPort() == -1 ? 80 : parsedUrl.getPort();
         httpClient.getState().setCredentials(
-            new AuthScope(parsedUrl.getHost(), port, AuthScope.ANY_REALM), defaultcreds);
+            new AuthScope(parsedUrl.getHost(), port, AuthScope.ANY_REALM),
+            defaultcreds);
       } catch (MalformedURLException ex) {
         throw new WikiException("bad url: " + url, ex);
       }
@@ -101,6 +107,8 @@ public class XWikiDocumentServiceImpl implements WikiDocumentService {
     digester.addBeanPropertySetter("page/content");
     digester.addSetNext("page", "add");
 
+    digester.addRule("page/modified", new Iso8601DateRule("lastModified"));
+
     try {
       digester.parse(getMethod.getResponseBodyAsStream());
     } catch (Exception ex) {
@@ -121,5 +129,40 @@ public class XWikiDocumentServiceImpl implements WikiDocumentService {
       throw new WikiException("error evaluating xwiki http method", ex);
     }
 
+  }
+
+  private static class Iso8601DateRule extends Rule {
+    
+    private String _propertyName;
+    
+    private String _body;
+    
+    
+    public Iso8601DateRule(String propertyName) {
+      _propertyName = propertyName;
+    }
+
+    public void body(String namespace, String name, String text)
+        throws Exception {
+      _body = text;
+    }
+    
+    public void end(String namespace, String name) throws Exception {
+      Calendar c = DatatypeConverter.parseDateTime(_body);
+      
+      String property = _propertyName;
+
+      if (property == null) {
+          // If we don't have a specific property name,
+          // use the element name.
+          property = name;
+      }
+
+      // Get a reference to the top object
+      Object top = digester.peek();
+
+      // Set the property (with conversion as necessary)
+      BeanUtils.setProperty(top, property, c.getTime());
+    }
   }
 }
