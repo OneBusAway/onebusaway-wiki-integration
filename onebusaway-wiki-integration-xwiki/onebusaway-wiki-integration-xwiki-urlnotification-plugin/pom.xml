@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.onebusaway</groupId>
         <artifactId>onebusaway-wiki-integration-xwiki</artifactId>
-        <version>0.0.2</version>
+        <version>0.0.3-SNAPSHOT</version>
     </parent>
 
     <artifactId>onebusaway-wiki-integration-xwiki-urlnotification-plugin</artifactId>
