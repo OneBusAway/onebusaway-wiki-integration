@@ -1,72 +1,100 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-    <modelVersion>4.0.0</modelVersion>
+  <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <artifactId>onebusaway</artifactId>
-        <groupId>org.onebusaway</groupId>
-        <version>1.0.6</version>
-    </parent>
-
+  <parent>
+    <artifactId>onebusaway</artifactId>
     <groupId>org.onebusaway</groupId>
-    <artifactId>onebusaway-wiki-integration</artifactId>
-    <packaging>pom</packaging>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.6</version>
+  </parent>
 
-    <name>onebusaway-wiki-integration</name>
-    <description>
+  <groupId>org.onebusaway</groupId>
+  <artifactId>onebusaway-wiki-integration</artifactId>
+  <packaging>pom</packaging>
+  <version>0.0.1-SNAPSHOT</version>
+
+  <name>onebusaway-wiki-integration</name>
+  <description>
       A flexible set of modules that allow OneBusAway to use a wiki or any other back-end content
       management systems as the source for front end content such as webpage content.
     </description>
 
-    <scm>
-        <connection>scm:svn:http://onebusaway.googlecode.com/svn/onebusaway-wiki-integration/trunk</connection>
-        <developerConnection>scm:svn:https://onebusaway.googlecode.com/svn/onebusaway-wiki-integration/trunk</developerConnection>
-        <url>http://code.google.com/p/onebusaway/source/browse/#svn/onebusaway-wiki-integration/trunk</url>
-    </scm>
+  <scm>
+    <connection>scm:svn:http://onebusaway.googlecode.com/svn/onebusaway-wiki-integration/trunk</connection>
+    <developerConnection>scm:svn:https://onebusaway.googlecode.com/svn/onebusaway-wiki-integration/trunk</developerConnection>
+    <url>http://code.google.com/p/onebusaway/source/browse/#svn/onebusaway-wiki-integration/trunk</url>
+  </scm>
 
-    <repositories>
-        <repository>
-            <id>releases.developer.onebusaway.org</id>
-            <url>http://developer.onebusaway.org/maven/repository/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>snapshots.developer.onebusaway.org</id>
-            <url>http://developer.onebusaway.org/maven/snapshot-repository/</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
+  <repositories>
+    <repository>
+      <id>releases.developer.onebusaway.org</id>
+      <url>http://developer.onebusaway.org/maven/repository/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>snapshots.developer.onebusaway.org</id>
+      <url>http://developer.onebusaway.org/maven/snapshot-repository/</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
 
-    <modules>
-        <module>onebusaway-wiki-integration-api</module>
-        <module>onebusaway-wiki-integration-file</module>
-        <module>onebusaway-wiki-integration-simple</module>
-        <module>onebusaway-wiki-integration-tags</module>
-        <module>onebusaway-wiki-integration-xwiki</module>
-    </modules>
+  <modules>
+    <module>onebusaway-wiki-integration-api</module>
+    <module>onebusaway-wiki-integration-file</module>
+    <module>onebusaway-wiki-integration-simple</module>
+    <module>onebusaway-wiki-integration-tags</module>
+    <module>onebusaway-wiki-integration-xwiki</module>
+  </modules>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>4.8.1</version>
-                <scope>test</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-    
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.8.1</version>
+        <scope>test</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>1.0</version>
+        <executions>
+          <execution>
+            <id>enforce-plugin-versions</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <requireJavaVersion>
+                  <version>1.6</version>
+                </requireJavaVersion>
+                <requireReleaseDeps>
+                  <onlyWhenRelease>true</onlyWhenRelease>
+                </requireReleaseDeps>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
 </project>
