@@ -30,10 +30,5 @@
             <version>${xwiki.version}</version>
             <scope>provided</scope>
         </dependency>
-        <!--
-            <dependency> <groupId>com.xpn.xwiki.platform.plugins</groupId>
-            <artifactId>xwiki-plugin-scheduler</artifactId> <version>${xwiki.version}</version> <scope>provided</scope>
-            </dependency>
-        -->
     </dependencies>
 </project>      
