@@ -2,6 +2,7 @@ package org.onebusaway.wiki.api.impl;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Locale;
 
 import org.onebusaway.wiki.api.WikiPage;
 
@@ -18,6 +19,8 @@ public class WikiPageImpl implements WikiPage, Serializable {
   private String namespace;
 
   private String name;
+
+  private Locale locale;
 
   private String title;
 
@@ -39,6 +42,14 @@ public class WikiPageImpl implements WikiPage, Serializable {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public Locale getLocale() {
+    return locale;
+  }
+
+  public void setLocale(Locale locale) {
+    this.locale = locale;
   }
 
   public String getTitle() {

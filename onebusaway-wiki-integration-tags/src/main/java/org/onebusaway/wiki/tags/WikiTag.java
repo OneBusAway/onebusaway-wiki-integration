@@ -3,6 +3,7 @@ package org.onebusaway.wiki.tags;
 import java.io.IOException;
 import java.io.Writer;
 import java.net.UnknownHostException;
+import java.util.Locale;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
@@ -26,6 +27,8 @@ public class WikiTag extends BodyTagSupport {
 
   protected String _name;
 
+  protected Locale _locale;
+
   @Autowired
   public void setWikiDocumentService(WikiDocumentService wikiDocumentService) {
     _wikiDocumentService = wikiDocumentService;
@@ -44,6 +47,10 @@ public class WikiTag extends BodyTagSupport {
     _name = name;
   }
 
+  public void setLocale(Locale locale) {
+    _locale = locale;
+  }
+
   @Override
   public int doStartTag() throws JspException {
     WebApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(pageContext.getServletContext());
@@ -59,7 +66,7 @@ public class WikiTag extends BodyTagSupport {
     if (_namespace != null && _name != null) {
       try {
         WikiPage page = _wikiDocumentService.getWikiPage(_namespace, _name,
-            false);
+            _locale, false);
         if (page != null) {
           String content = _wikiRenderingService.renderPage(page);
           writer.write(content);

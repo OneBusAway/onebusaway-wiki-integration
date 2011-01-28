@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import javax.xml.bind.DatatypeConverter;
 
@@ -20,7 +21,6 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.onebusaway.wiki.api.WikiDocumentService;
 import org.onebusaway.wiki.api.WikiException;
 import org.onebusaway.wiki.api.WikiPage;
-import org.onebusaway.wiki.api.impl.WikiPageImpl;
 
 /**
  * Implementation of {@link WikiDocumentService} that uses the XWiki REST
@@ -59,14 +59,9 @@ public class XWikiDocumentServiceImpl implements WikiDocumentService {
     _xwikiPassword = xwikiPassword;
   }
 
-  @Override
-  public WikiPage getWikiPage(String namespace, String name,
-      boolean forceRefresh) throws WikiException {
-
+  private XWikiPageImpl getWikiPage(String url, boolean forceRefresh) 
+      throws WikiException {
     HttpClient httpClient = new HttpClient();
-
-    String url = _xwikiUrl + "/rest/wikis/xwiki/spaces/" + namespace
-        + "/pages/" + name;
 
     // Configure basic authentication
     if (_xwikiUsername != null && _xwikiPassword != null) {
@@ -97,14 +92,22 @@ public class XWikiDocumentServiceImpl implements WikiDocumentService {
 
     Digester digester = new Digester();
 
-    List<WikiPage> pages = new ArrayList<WikiPage>();
+    List<XWikiPageImpl> pages = new ArrayList<XWikiPageImpl>();
     digester.push(pages);
 
-    digester.addObjectCreate("page", WikiPageImpl.class);
+    digester.addObjectCreate("page", XWikiPageImpl.class);
     digester.addBeanPropertySetter("page/space", "namespace");
     digester.addBeanPropertySetter("page/name");
     digester.addBeanPropertySetter("page/title");
     digester.addBeanPropertySetter("page/content");
+    digester.addBeanPropertySetter("page/language");
+    digester.addSetProperties("page/translations", "default", "defaultLanguage");
+    digester.addObjectCreate("page/translations/translation", XWikiPageTranslation.class);
+    digester.addSetProperties("page/translations/translation");
+    digester.addSetNext("page/translations/translation", "addTranslation");
+    digester.addObjectCreate("page/translations/translation/link", XWikiPageLink.class);
+    digester.addSetProperties("page/translations/translation/link");
+    digester.addSetNext("page/translations/translation/link", "addLink");
     digester.addSetNext("page", "add");
 
     digester.addRule("page/modified", new Iso8601DateRule("lastModified"));
@@ -117,8 +120,31 @@ public class XWikiDocumentServiceImpl implements WikiDocumentService {
 
     if (pages.isEmpty())
       return null;
-
+    
     return pages.get(0);
+  }
+
+  @Override
+  public WikiPage getWikiPage(String namespace, String name,
+      Locale locale, boolean forceRefresh) throws WikiException {
+
+    // Get wiki page in default language, with its translations
+    String url = _xwikiUrl + "/rest/wikis/xwiki/spaces/" + namespace
+        + "/pages/" + name;
+    
+    XWikiPageImpl page = getWikiPage(url, forceRefresh);
+    
+    // If a specific locale is requested and does not match the default one
+    if (locale != null && !locale.equals(page.getLocale())) {
+      // Check if the requested locale is available for this wiki page
+      XWikiPageTranslation translation = page.findTranslation(locale.getLanguage());
+      if (translation != null) {
+        return getWikiPage(translation.getURL(), forceRefresh);
+      }
+    }
+    
+    // Return the default wiki page
+    return page;
   }
 
   private int evaluateHttpMethod(HttpClient httpClient, GetMethod getMethod)

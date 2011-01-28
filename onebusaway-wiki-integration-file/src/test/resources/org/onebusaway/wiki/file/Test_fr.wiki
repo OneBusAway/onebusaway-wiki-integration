@@ -1,0 +1,3 @@
+C'est une page de test.
+
+Avec plusieurs lignes.

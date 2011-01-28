@@ -1,5 +1,7 @@
 package org.onebusaway.wiki.api;
 
+import java.util.Locale;
+
 /**
  * Generic interface for retrieving content in the form of a {@link WikiPage}
  * from a back-end wiki or other content management system.
@@ -11,19 +13,20 @@ package org.onebusaway.wiki.api;
 public interface WikiDocumentService {
 
   /**
-   * Retrieve a {@link WikiPage} with the specified namespace and name from a
-   * back-end wiki or content management system implementation. Handling of
-   * namespace and name combination in identifying a page will likely be
-   * implementation specific.
+   * Retrieve a {@link WikiPage} with the specified namespace, name and locale
+   * from a back-end wiki or content management system implementation.
+   * Handling of namespace and name combination in identifying a page will 
+   * likely be implementation specific.
    * 
    * @param namespace the namespace of the wiki page
    * @param name the name of the wiki page
+   * @param locale the locale of the wiki page
    * @param forceRefresh a caching hint that indicates if the page should be
    *          refreshed completely if true, otherwise cached content may be
    *          returned
    * @return a page for the requested resource, or null if not found
    * @throws WikiException on error
    */
-  public WikiPage getWikiPage(String namespace, String name,
+  public WikiPage getWikiPage(String namespace, String name, Locale locale,
       boolean forceRefresh) throws WikiException;
 }
