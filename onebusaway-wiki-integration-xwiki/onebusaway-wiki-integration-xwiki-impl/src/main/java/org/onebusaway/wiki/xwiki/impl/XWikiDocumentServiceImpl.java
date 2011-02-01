@@ -135,7 +135,7 @@ public class XWikiDocumentServiceImpl implements WikiDocumentService {
     XWikiPageImpl page = getWikiPage(url, forceRefresh);
     
     // If a specific locale is requested and does not match the default one
-    if (locale != null && !locale.equals(page.getLocale())) {
+    if (page != null && locale != null && !locale.equals(page.getLocale())) {
       // Check if the requested locale is available for this wiki page
       XWikiPageTranslation translation = page.findTranslation(locale.getLanguage());
       if (translation != null) {
