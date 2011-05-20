@@ -21,13 +21,11 @@ public class ClasspathWikiDocumentServiceImpl extends
   }
 
   @Override
-  protected List<Localized<URL>> getResources(String namespace, String name,
-      Locale locale) {
+  protected List<Localized<URL>> getResources(String namespace,
+      List<Localized<String>> fullNames, Locale locale) {
 
     if (_packageRoot == null)
       return Collections.emptyList();
-
-    List<Localized<String>> fullNames = getFullNames(name, locale);
 
     List<Localized<URL>> paths = new ArrayList<Localized<URL>>();
 

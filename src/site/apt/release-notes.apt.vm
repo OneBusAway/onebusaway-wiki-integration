@@ -5,10 +5,14 @@ Release Notes
   * Initial Site Documentation
   
   * Bump to require Maven 3
+  
+  * Support for locale-aware language specific wiki pages (see issue 399).
 
   * Full Documentation: {{${site_base_url}/onebusaway-siri/${currentVersion}/}}
 
 * 0.0.2
+
+  * Bump onebusaway parent pom to 1.0.7
 
 * 0.0.1
 

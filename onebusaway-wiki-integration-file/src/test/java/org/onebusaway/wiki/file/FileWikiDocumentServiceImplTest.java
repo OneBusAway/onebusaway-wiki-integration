@@ -4,20 +4,31 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import java.io.File;
+import java.io.InputStream;
+import java.security.MessageDigest;
 import java.util.Locale;
 
+import org.apache.commons.codec.binary.Hex;
+import org.junit.Before;
 import org.junit.Test;
+import org.onebusaway.wiki.api.WikiAttachmentContent;
 import org.onebusaway.wiki.api.WikiException;
 import org.onebusaway.wiki.api.WikiPage;
 
 public class FileWikiDocumentServiceImplTest {
 
-  @Test
-  public void test() throws WikiException {
+  private FileWikiDocumentServiceImpl service;
 
-    FileWikiDocumentServiceImpl service = new FileWikiDocumentServiceImpl();
+  @Before
+  public void setup() {
+    service = new FileWikiDocumentServiceImpl();
     service.setDocumentDirectory(new File(
         "src/test/resources/org/onebusaway/wiki/file"));
+
+  }
+
+  @Test
+  public void test() throws WikiException {
 
     WikiPage page = service.getWikiPage(null, "Test", Locale.ENGLISH, false);
     assertEquals(null, page.getNamespace());
@@ -116,9 +127,6 @@ public class FileWikiDocumentServiceImplTest {
   @Test
   public void testExtension() throws WikiException {
 
-    FileWikiDocumentServiceImpl service = new FileWikiDocumentServiceImpl();
-    service.setDocumentDirectory(new File(
-        "src/test/resources/org/onebusaway/wiki/file"));
     service.setExtension("txt");
 
     WikiPage page = service.getWikiPage(null, "Test", Locale.ENGLISH, false);
@@ -133,5 +141,37 @@ public class FileWikiDocumentServiceImplTest {
     assertEquals("SomeName", page.getTitle());
     assertEquals("This is a wiki entry.\n\nIt has a different extension.\n",
         page.getContent());
+  }
+
+  @Test
+  public void testAttachment() throws WikiException {
+
+    WikiAttachmentContent attachment = service.getWikiAttachmentContent(null,
+        "Test", "Logo.png", Locale.ENGLISH, false);
+    assertNull(attachment.getNamespace());
+    assertEquals("Test", attachment.getPageName());
+    assertEquals("Logo.png", attachment.getName());
+
+    String v = digest(attachment.getContent());
+    assertEquals("881cba1d48dda0c42a619ffc2c22fcc2", v);
+  }
+
+  private static String digest(InputStream is) {
+    try {
+      MessageDigest digest = MessageDigest.getInstance("MD5");
+      byte[] buffer = new byte[1024];
+      while (true) {
+        int rc = is.read(buffer);
+        if (rc < 0)
+          break;
+        digest.update(buffer, 0, rc);
+      }
+      is.close();
+      byte[] result = digest.digest();
+      Hex hex = new Hex();
+      return new String(hex.encode(result), hex.getCharsetName());
+    } catch (Exception ex) {
+      throw new IllegalStateException(ex);
+    }
   }
 }

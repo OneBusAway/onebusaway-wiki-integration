@@ -1,5 +1,6 @@
 package org.onebusaway.wiki.xwiki.impl;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -13,14 +14,17 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.digester.Digester;
 import org.apache.commons.digester.Rule;
 import org.apache.commons.httpclient.Credentials;
+import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.onebusaway.wiki.api.WikiAttachmentContent;
 import org.onebusaway.wiki.api.WikiDocumentService;
 import org.onebusaway.wiki.api.WikiException;
 import org.onebusaway.wiki.api.WikiPage;
+import org.onebusaway.wiki.api.impl.WikiAttachmentContentImpl;
 
 /**
  * Implementation of {@link WikiDocumentService} that uses the XWiki REST
@@ -59,26 +63,75 @@ public class XWikiDocumentServiceImpl implements WikiDocumentService {
     _xwikiPassword = xwikiPassword;
   }
 
-  private XWikiPageImpl getWikiPage(String url, boolean forceRefresh) 
-      throws WikiException {
-    HttpClient httpClient = new HttpClient();
+  /****
+   * {@link WikiDocumentService}
+   ****/
 
-    // Configure basic authentication
-    if (_xwikiUsername != null && _xwikiPassword != null) {
-      httpClient.getParams().setAuthenticationPreemptive(true);
-      Credentials defaultcreds = new UsernamePasswordCredentials(
-          _xwikiUsername, _xwikiPassword);
+  @Override
+  public WikiPage getWikiPage(String namespace, String name, Locale locale,
+      boolean forceRefresh) throws WikiException {
 
-      try {
-        URL parsedUrl = new URL(url);
-        int port = parsedUrl.getPort() == -1 ? 80 : parsedUrl.getPort();
-        httpClient.getState().setCredentials(
-            new AuthScope(parsedUrl.getHost(), port, AuthScope.ANY_REALM),
-            defaultcreds);
-      } catch (MalformedURLException ex) {
-        throw new WikiException("bad url: " + url, ex);
+    // Get wiki page in default language, with its translations
+    String url = _xwikiUrl + "/rest/wikis/xwiki/spaces/" + namespace
+        + "/pages/" + name;
+
+    XWikiPageImpl page = getWikiPage(url, forceRefresh);
+
+    // If a specific locale is requested and does not match the default one
+    if (page != null && locale != null && !locale.equals(page.getLocale())) {
+      // Check if the requested locale is available for this wiki page
+      XWikiPageTranslation translation = page.findTranslation(locale.getLanguage());
+      if (translation != null) {
+        return getWikiPage(translation.getURL(), forceRefresh);
       }
     }
+
+    // Return the default wiki page
+    return page;
+  }
+
+  @Override
+  public WikiAttachmentContent getWikiAttachmentContent(String namespace,
+      String pageName, String name, Locale locale, boolean forceRefresh)
+      throws WikiException {
+
+    String url = _xwikiUrl + "/rest/wikis/xwiki/spaces/" + namespace
+        + "/pages/" + pageName + "/attachments/" + name;
+
+    HttpClient httpClient = getHttpClientForUrl(url);
+
+    GetMethod getMethod = new GetMethod(url);
+
+    int code = evaluateHttpMethod(httpClient, getMethod);
+
+    if (code != HttpStatus.SC_OK) {
+      return null;
+    }
+
+    try {
+      WikiAttachmentContentImpl content = new WikiAttachmentContentImpl();
+      content.setNamespace(namespace);
+      content.setPageName(pageName);
+      content.setName(name);
+      content.setLocale(locale);
+      content.setContent(getMethod.getResponseBodyAsStream());
+      Header v = getMethod.getResponseHeader("Content-type");
+      if (v != null)
+        content.setContentType(v.getValue());
+      return content;
+    } catch (IOException ex) {
+      throw new WikiException("error evaluating xwiki httpd method", ex);
+    }
+  }
+
+  /****
+   * Private Methods
+   *****/
+
+  private XWikiPageImpl getWikiPage(String url, boolean forceRefresh)
+      throws WikiException {
+
+    HttpClient httpClient = getHttpClientForUrl(url);
 
     GetMethod getMethod = new GetMethod(url);
 
@@ -102,10 +155,12 @@ public class XWikiDocumentServiceImpl implements WikiDocumentService {
     digester.addBeanPropertySetter("page/content");
     digester.addBeanPropertySetter("page/language");
     digester.addSetProperties("page/translations", "default", "defaultLanguage");
-    digester.addObjectCreate("page/translations/translation", XWikiPageTranslation.class);
+    digester.addObjectCreate("page/translations/translation",
+        XWikiPageTranslation.class);
     digester.addSetProperties("page/translations/translation");
     digester.addSetNext("page/translations/translation", "addTranslation");
-    digester.addObjectCreate("page/translations/translation/link", XWikiPageLink.class);
+    digester.addObjectCreate("page/translations/translation/link",
+        XWikiPageLink.class);
     digester.addSetProperties("page/translations/translation/link");
     digester.addSetNext("page/translations/translation/link", "addLink");
     digester.addSetNext("page", "add");
@@ -120,31 +175,30 @@ public class XWikiDocumentServiceImpl implements WikiDocumentService {
 
     if (pages.isEmpty())
       return null;
-    
+
     return pages.get(0);
   }
 
-  @Override
-  public WikiPage getWikiPage(String namespace, String name,
-      Locale locale, boolean forceRefresh) throws WikiException {
+  private HttpClient getHttpClientForUrl(String url) throws WikiException {
+    HttpClient httpClient = new HttpClient();
 
-    // Get wiki page in default language, with its translations
-    String url = _xwikiUrl + "/rest/wikis/xwiki/spaces/" + namespace
-        + "/pages/" + name;
-    
-    XWikiPageImpl page = getWikiPage(url, forceRefresh);
-    
-    // If a specific locale is requested and does not match the default one
-    if (page != null && locale != null && !locale.equals(page.getLocale())) {
-      // Check if the requested locale is available for this wiki page
-      XWikiPageTranslation translation = page.findTranslation(locale.getLanguage());
-      if (translation != null) {
-        return getWikiPage(translation.getURL(), forceRefresh);
+    // Configure basic authentication
+    if (_xwikiUsername != null && _xwikiPassword != null) {
+      httpClient.getParams().setAuthenticationPreemptive(true);
+      Credentials defaultcreds = new UsernamePasswordCredentials(
+          _xwikiUsername, _xwikiPassword);
+
+      try {
+        URL parsedUrl = new URL(url);
+        int port = parsedUrl.getPort() == -1 ? 80 : parsedUrl.getPort();
+        httpClient.getState().setCredentials(
+            new AuthScope(parsedUrl.getHost(), port, AuthScope.ANY_REALM),
+            defaultcreds);
+      } catch (MalformedURLException ex) {
+        throw new WikiException("bad url: " + url, ex);
       }
     }
-    
-    // Return the default wiki page
-    return page;
+    return httpClient;
   }
 
   private int evaluateHttpMethod(HttpClient httpClient, GetMethod getMethod)
@@ -154,16 +208,14 @@ public class XWikiDocumentServiceImpl implements WikiDocumentService {
     } catch (Exception ex) {
       throw new WikiException("error evaluating xwiki http method", ex);
     }
-
   }
 
   private static class Iso8601DateRule extends Rule {
-    
+
     private String _propertyName;
-    
+
     private String _body;
-    
-    
+
     public Iso8601DateRule(String propertyName) {
       _propertyName = propertyName;
     }
@@ -172,16 +224,16 @@ public class XWikiDocumentServiceImpl implements WikiDocumentService {
         throws Exception {
       _body = text;
     }
-    
+
     public void end(String namespace, String name) throws Exception {
       Calendar c = DatatypeConverter.parseDateTime(_body);
-      
+
       String property = _propertyName;
 
       if (property == null) {
-          // If we don't have a specific property name,
-          // use the element name.
-          property = name;
+        // If we don't have a specific property name,
+        // use the element name.
+        property = name;
       }
 
       // Get a reference to the top object

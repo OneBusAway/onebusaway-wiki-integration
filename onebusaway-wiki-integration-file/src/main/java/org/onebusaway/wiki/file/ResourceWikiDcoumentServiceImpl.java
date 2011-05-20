@@ -14,9 +14,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import org.onebusaway.wiki.api.WikiAttachmentContent;
 import org.onebusaway.wiki.api.WikiDocumentService;
 import org.onebusaway.wiki.api.WikiException;
 import org.onebusaway.wiki.api.WikiPage;
+import org.onebusaway.wiki.api.impl.WikiAttachmentContentImpl;
 import org.onebusaway.wiki.api.impl.WikiPageImpl;
 
 public abstract class ResourceWikiDcoumentServiceImpl implements
@@ -70,23 +72,60 @@ public abstract class ResourceWikiDcoumentServiceImpl implements
   }
 
   @Override
-  public WikiPage getWikiPage(String namespace, String name, Locale locale,
+  public WikiPage getWikiPage(String namespace, String pageName, Locale locale,
       boolean forceRefresh) throws WikiException {
+
+    List<Localized<String>> fullNames = getFullNames(pageName, null, locale);
 
     List<Localized<URL>> paths = null;
 
     try {
-      paths = getResources(namespace, name, locale);
+      paths = getResources(namespace, fullNames, locale);
     } catch (MalformedURLException ex) {
       throw new WikiException("error reading wiki page " + namespace + "/"
-          + name, ex);
+          + pageName, ex);
     }
 
     for (Localized<URL> localizedPath : paths) {
       Locale pathLocale = localizedPath.getLocale();
       URL path = localizedPath.getObject();
       try {
-        return getUrlAsWikiPage(namespace, name, pathLocale, path);
+        return getUrlAsWikiPage(namespace, pageName, pathLocale, path);
+      } catch (Exception ex) {
+        throw new WikiException("error reading wiki page " + namespace + "/"
+            + pageName + " from file " + path, ex);
+      }
+    }
+    return null;
+  }
+
+  @Override
+  public WikiAttachmentContent getWikiAttachmentContent(String namespace,
+      String pageName, String name, Locale locale, boolean forceRefresh)
+      throws WikiException {
+
+    List<Localized<String>> fullNames = getFullNames(pageName, name, locale);
+
+    List<Localized<URL>> paths = null;
+
+    try {
+      paths = getResources(namespace, fullNames, locale);
+    } catch (MalformedURLException ex) {
+      throw new WikiException("error reading wiki page " + namespace + "/"
+          + name, ex);
+    }
+
+    for (Localized<URL> localizedPath : paths) {
+      URL path = localizedPath.getObject();
+      try {
+        WikiAttachmentContentImpl content = new WikiAttachmentContentImpl();
+        content.setNamespace(namespace);
+        content.setPageName(pageName);
+        content.setName(name);
+        content.setLocale(localizedPath.getLocale());
+        content.setContent(path.openStream());
+        content.setContentType(getContentTypeForUrl(path));
+        return content;
       } catch (Exception ex) {
         throw new WikiException("error reading wiki page " + namespace + "/"
             + name + " from file " + path, ex);
@@ -95,11 +134,15 @@ public abstract class ResourceWikiDcoumentServiceImpl implements
     return null;
   }
 
-  protected List<Localized<String>> getFullNames(String name, Locale locale) {
+  protected List<Localized<String>> getFullNames(String pageName,
+      String attachmentName, Locale locale) {
 
+    String name = pageName;
     String extension = "";
 
-    if (_extension != null)
+    if (attachmentName != null)
+      name += "-" + attachmentName;
+    else if (_extension != null)
       extension += "." + _extension;
 
     List<Localized<String>> fullNames = new ArrayList<Localized<String>>();
@@ -117,9 +160,10 @@ public abstract class ResourceWikiDcoumentServiceImpl implements
   }
 
   protected abstract List<Localized<URL>> getResources(String namespace,
-      String name, Locale locale) throws MalformedURLException;
+      List<Localized<String>> fullNames, Locale locale)
+      throws MalformedURLException;
 
-  private WikiPage getUrlAsWikiPage(String namespace, String name,
+  protected WikiPage getUrlAsWikiPage(String namespace, String name,
       Locale locale, URL resource) throws IOException, URISyntaxException {
 
     InputStream in = resource.openStream();
@@ -146,5 +190,18 @@ public abstract class ResourceWikiDcoumentServiceImpl implements
     }
 
     return page;
+  }
+
+  protected String getContentTypeForUrl(URL url) {
+    String path = url.getPath();
+    int index = path.lastIndexOf('.');
+    if (index == -1)
+      return null;
+    String extension = path.substring(index + 1).toLowerCase();
+    if (extension.equals("png"))
+      return "image/png";
+    if (extension.equals("jpeg") || extension.equals("jpg"))
+      return "image/jpeg";
+    return null;
   }
 }
