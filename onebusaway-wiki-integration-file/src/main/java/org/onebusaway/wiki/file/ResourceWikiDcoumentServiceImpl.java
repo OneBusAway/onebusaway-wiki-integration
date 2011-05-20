@@ -141,7 +141,8 @@ public abstract class ResourceWikiDcoumentServiceImpl implements
     String extension = "";
 
     if (attachmentName != null)
-      name += "-" + attachmentName;
+      name += "@" + attachmentName;
+    
     else if (_extension != null)
       extension += "." + _extension;
 
