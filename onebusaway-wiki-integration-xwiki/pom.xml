@@ -6,7 +6,7 @@
     <parent>
         <artifactId>onebusaway-wiki-integration</artifactId>
         <groupId>org.onebusaway</groupId>
-        <version>1.0.0</version>
+        <version>1.0.1-SNAPSHOT</version>
     </parent>
 
     <groupId>org.onebusaway</groupId>

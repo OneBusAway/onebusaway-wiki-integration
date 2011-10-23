@@ -5,7 +5,7 @@
   <groupId>org.onebusaway</groupId>
   <artifactId>onebusaway-wiki-integration</artifactId>
   <packaging>pom</packaging>
-  <version>1.0.0</version>
+  <version>1.0.1-SNAPSHOT</version>
 
   <parent>
     <artifactId>onebusaway</artifactId>
@@ -21,9 +21,9 @@
   </description>
 
   <scm>
-    <connection>scm:svn:http://onebusaway.googlecode.com/svn/onebusaway-wiki-integration/tags/onebusaway-wiki-integration-1.0.0</connection>
-    <developerConnection>scm:svn:https://onebusaway.googlecode.com/svn/onebusaway-wiki-integration/tags/onebusaway-wiki-integration-1.0.0</developerConnection>
-    <url>http://code.google.com/p/onebusaway/source/browse/#svn/onebusaway-wiki-integration/tags/onebusaway-wiki-integration-1.0.0</url>
+    <connection>scm:svn:http://onebusaway.googlecode.com/svn/onebusaway-wiki-integration/trunk</connection>
+    <developerConnection>scm:svn:https://onebusaway.googlecode.com/svn/onebusaway-wiki-integration/trunk</developerConnection>
+    <url>http://code.google.com/p/onebusaway/source/browse/#svn/onebusaway-wiki-integration/trunk</url>
   </scm>
 
   <distributionManagement>
