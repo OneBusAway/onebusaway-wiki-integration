@@ -1,30 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.onebusaway</groupId>
-  <artifactId>onebusaway-wiki-integration</artifactId>
-  <packaging>pom</packaging>
-  <version>1.0.1-SNAPSHOT</version>
-
   <parent>
     <artifactId>onebusaway</artifactId>
     <groupId>org.onebusaway</groupId>
-    <version>1.1.0</version>
+    <version>1.1.6</version>
   </parent>
-
+  <artifactId>onebusaway-wiki-integration</artifactId>
+  <packaging>pom</packaging>
+  <version>1.0.1-SNAPSHOT</version>
 
   <name>onebusaway-wiki-integration</name>
   <description>
       A flexible set of modules that allow OneBusAway to use a wiki or any other back-end content
       management systems as the source for front end content such as webpage content.
   </description>
-
+  <url>https://github.com/OneBusAway/onebusaway-wiki-integration/wiki/</url>
+  
   <scm>
-    <connection>scm:svn:http://onebusaway.googlecode.com/svn/onebusaway-wiki-integration/trunk</connection>
-    <developerConnection>scm:svn:https://onebusaway.googlecode.com/svn/onebusaway-wiki-integration/trunk</developerConnection>
-    <url>http://code.google.com/p/onebusaway/source/browse/#svn/onebusaway-wiki-integration/trunk</url>
+    <connection>scm:git:http://github.com/OneBusAway/onebusaway-wiki-integration.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/OneBusAway/onebusaway-wiki-integration.git</developerConnection>
+    <url>http://github.com/OneBusAway/onebusaway-wiki-integration</url>
   </scm>
+
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/OneBusAway/onebusaway-wiki-integration/issues</url>
+  </issueManagement>
 
   <distributionManagement>
     <!-- Even though we specify this in the parent pom, we need to specify it here to have full control over the url -->
