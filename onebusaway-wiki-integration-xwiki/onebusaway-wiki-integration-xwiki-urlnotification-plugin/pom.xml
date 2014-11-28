@@ -10,6 +10,21 @@
     <artifactId>onebusaway-wiki-integration-xwiki-urlnotification-plugin</artifactId>
     <packaging>jar</packaging>
 
+    <repositories>
+        <repository>
+          <id>maven.central</id>
+          <url>http://repo1.maven.org/maven2</url>
+        </repository>
+        <repository>
+          <id>public.onebusaway.org</id>
+          <url>http://nexus.onebusaway.org/content/groups/public/</url>
+        </repository>
+        <repository>
+            <id>xwiki</id>
+            <url>http://maven.xwiki.org/releases</url>
+        </repository>
+    </repositories>
+
     <name>onebusaway-wiki-integration-xwiki-urlnotification-plugin</name>
     <description>
       XWiki plugin that will make a request to a specified url whenever a wiki document event is
@@ -29,5 +44,10 @@
             <version>${xwiki.version}</version>
             <scope>provided</scope>
         </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>1.5.6</version>
+            </dependency>
     </dependencies>
 </project>      

@@ -110,8 +110,7 @@ public abstract class AbstractStrutsTagMacro<T extends CommonMacroParameters, V 
 
   private String renderWikiSyntax(String content,
       MacroTransformationContext context) throws MacroExecutionException {
-
-    Transformation transformation = context.getMacroTransformation();
+    Transformation transformation = context.getTransformation();
     Syntax wikiSyntax = context.getSyntax();
 
     String xhtml;
