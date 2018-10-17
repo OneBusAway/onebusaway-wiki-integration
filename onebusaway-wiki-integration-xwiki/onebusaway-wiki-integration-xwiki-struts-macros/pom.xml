@@ -19,7 +19,7 @@
     </description>
 
     <properties>
-        <struts.version>2.1.8.1</struts.version>
+        <struts.version>2.3.35</struts.version>
     </properties>
 
     <dependencies>
