@@ -25,11 +25,11 @@
     <repositories>
         <repository>
           <id>public.onebusaway.org</id>
-          <url>http://nexus.onebusaway.org/content/groups/public/</url>
+          <url>https://nexus.onebusaway.org/content/groups/public/</url>
         </repository>
         <repository>
             <id>xwiki</id>
-            <url>http://maven.xwiki.org/releases</url>
+            <url>https://maven.xwiki.org/releases</url>
         </repository>
     </repositories>
 
